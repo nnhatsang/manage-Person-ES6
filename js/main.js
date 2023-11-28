@@ -5,14 +5,17 @@ function queS(value) {
   return document.querySelector(value);
 }
 const listPeople = new ListPerson();
+let arrPerson = listPeople.people;
+console.log(arrPerson);
 
 function showFields() {
-  const userType = document.getElementById("userType").value;
-  const additionalFieldsContainer = document.getElementById("additionalFields");
+  const userType = getEl("userType").value;
+  const additionalFieldsContainer = getEl("additionalFields");
+  additionalFieldsContainer.innerHTML = "";
 
-
-  if (userType === "Student") {
-    additionalFieldsContainer.innerHTML += `
+  switch (userType) {
+    case "Student":
+      additionalFieldsContainer.innerHTML += `
       <div class="form-group">
         <label for="math">Toán:</label>
         <input type="text" class="form-control" id="math" placeholder="Nhập điểm Toán">
@@ -26,8 +29,9 @@ function showFields() {
         <input type="text" class="form-control" id="chemistry" placeholder="Nhập điểm Hóa">
       </div>
     `;
-  } else if (userType === "Employee") {
-    additionalFieldsContainer.innerHTML += `
+      break;
+    case "Employee":
+      additionalFieldsContainer.innerHTML += `
       <div class="form-group">
         <label for="workDays">Số Ngày Làm Việc:</label>
         <input type="text" class="form-control" id="workDays" placeholder="Nhập số ngày làm việc">
@@ -37,8 +41,9 @@ function showFields() {
         <input type="text" class="form-control" id="dailySalary" placeholder="Nhập lương theo ngày">
       </div>
     `;
-  } else if (userType === "Customer") {
-    additionalFieldsContainer.innerHTML += `
+      break;
+    case "Customer":
+      additionalFieldsContainer.innerHTML += `
       <div class="form-group">
         <label for="companyName">Tên Công Ty:</label>
         <input type="text" class="form-control" id="companyName" placeholder="Nhập tên công ty">
@@ -52,83 +57,119 @@ function showFields() {
         <input type="text" class="form-control" id="rating" placeholder="Nhập đánh giá">
       </div>
     `;
+      break;
+    default:
+      additionalFieldsContainer.innerHTML += ``;
+      break;
   }
 }
 
 function saveUser() {
-  const userType = document.querySelector("#userType").value;
-  const firstName = document.querySelector("#firstName").value;
-  const lastName = document.querySelector("#lastName").value;
-  const email = document.querySelector("#email").value;
-  const address = document.querySelector("#address").value;
-
+  const userType = queS("#userType").value;
+  const id = queS("#userId").value;
+  const firstName = queS("#firstName").value;
+  const lastName = queS("#lastName").value;
+  const email = queS("#email").value;
+  const address = queS("#address").value;
+  listPeople.getLocalStore();
   let additionalFields;
-
-  if (userType === "Student") {
-    const math = document.querySelector("#math").value;
-    const physics = document.querySelector("#physics").value;
-    const chemistry = document.querySelector("#chemistry").value;
-
-    additionalFields = { math, physics, chemistry };
-  } else if (userType === "Employee") {
-    const workDays = document.querySelector("#workDays").value;
-    const dailySalary = document.querySelector("#dailySalary").value;
-
-    additionalFields = { workDays, dailySalary };
-  } else if (userType === "Customer") {
-    const companyName = document.querySelector("#companyName").value;
-    const invoiceValue = document.querySelector("#invoiceValue").value;
-    const rating = document.querySelector("#rating").value;
-
-    additionalFields = { companyName, invoiceValue, rating };
+  switch (userType) {
+    case "Student":
+      const math = queS("#math").value;
+      const physics = queS("#physics").value;
+      const chemistry = queS("#chemistry").value;
+      additionalFields = { math, physics, chemistry, userType };
+      break;
+    case "Employee":
+      const workDays = queS("#workDays").value;
+      const dailySalary = queS("#dailySalary").value;
+      additionalFields = { workDays, dailySalary, userType };
+      break;
+    case "Customer":
+      const companyName = queS("#companyName").value;
+      const invoiceValue = queS("#invoiceValue").value;
+      const rating = queS("#rating").value;
+      additionalFields = { companyName, invoiceValue, rating, userType };
+      break;
+    default:
+      additionalFields = {};
   }
 
   // Create an instance of the appropriate Person class
   let newPerson;
-  if (userType === "Student") {
-    newPerson = new Student(
-      firstName,
-      lastName,
-      address,
-      email,
-      additionalFields.math,
-      additionalFields.physics,
-      additionalFields.chemistry
-    );
-  } else if (userType === "Employee") {
-    newPerson = new Employee(
-      firstName,
-      lastName,
-      address,
-      email,
-      additionalFields.workDays,
-      additionalFields.dailySalary
-    );
-  } else if (userType === "Customer") {
-    newPerson = new Customer(
-      firstName,
-      lastName,
-      address,
-      email,
-      additionalFields.companyName,
-      additionalFields.invoiceValue,
-      additionalFields.rating
-    );
+  switch (userType) {
+    case "Student":
+      newPerson = new Student(
+        id,
+        firstName,
+        lastName,
+        address,
+        email,
+        additionalFields.math,
+        additionalFields.physics,
+        additionalFields.chemistry,
+        userType
+      );
+      newPerson.calculAverage = newPerson.calculAverage();
+      break;
+    case "Employee":
+      newPerson = new Employee(
+        id,
+        firstName,
+        lastName,
+        address,
+        email,
+        additionalFields.workDays,
+        additionalFields.dailySalary,
+        userType
+      );
+      newPerson.calcul = newPerson.calcul();
+      break;
+    case "Customer":
+      newPerson = new Customer(
+        id,
+        firstName,
+        lastName,
+        address,
+        email,
+        additionalFields.companyName,
+        additionalFields.invoiceValue,
+        additionalFields.rating,
+        userType
+      );
+      break;
   }
+  console.log(newPerson);
 
-  // Add the new person to the list
   listPeople.addPerson(newPerson);
-  console.log(listPeople);
-
-  // Alert to show the user information (you can remove this if not needed)
-  alert(`Thông tin Người Dùng:
-    Loại: ${userType},
-    Họ: ${firstName},
-    Tên: ${lastName},
-    Email: ${email},
-    Địa Chỉ: ${address},
-    ${additionalFields}`);
-
-  // Hide the modal
+  listPeople.saveLocalUser();
+  document.querySelector("form").reset();
+  getEl("additionalFields").innerHTML = "";
   $("#myModal").modal("hide");
 }
+
+// function renderGUI(arr = listPeople) {
+//   var content = "";
+//   for (let i = 0; i < arr.length; i++) {
+//     var person = arr[i];
+//     var diemTB =
+//       (person.diemToan + person.diemLy + person.diemHoa + person.diemRenLuyen) /
+//       4;
+//     content += `
+//         <tr class="table-dark">
+//               <td scope="row">${person.maperson}</td>
+//               <td>${person.tenperson}</td>
+//               <td>${person.loaiperson}</td>
+//               <td>${diemTB}</td>
+//               <td>${person.email}</td>
+//               <td>${person.soDienThoai}</td>
+//               <td>
+//                 <button type="button" class="btn btn-danger" onclick="deleteUser('${sinhVien.maSinhVien}')">Xoá</button>
+//       <button class="btn btn-warning" onclick="getInfoUser('${sinhVien.maSinhVien}')">Sửa</button>
+//               </td>
+//             </tr>
+//         `;
+//   }
+//   queS("tableDanhSach").innerHTML = content;
+// }
+console.log(listPeople.people);
