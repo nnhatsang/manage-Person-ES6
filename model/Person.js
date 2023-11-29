@@ -1,9 +1,9 @@
 class Person {
-  constructor(firstName, lastName, address, id, email, userType) {
+  constructor(firstName, lastName, address, userId, email, userType) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.address = address;
-    this.id = id;
+    this.userId = userId;
     this.email = email;
     this.userType = userType;
   }
@@ -14,17 +14,17 @@ class Student extends Person {
     firstName,
     lastName,
     address,
-    id,
+    userId,
     email,
     math,
     physics,
     chemistry,
     userType
   ) {
-    super(firstName, lastName, address, id, email, userType);
-    this.math = math;
-    this.physics = physics;
-    this.chemistry = chemistry;
+    super(firstName, lastName, address, userId, email, userType);
+    this.math = parseFloat(math);
+    this.physics = parseFloat(physics);
+    this.chemistry = parseFloat(chemistry);
   }
   calculAverage() {
     return (this.math + this.physics + this.chemistry) / 3;
@@ -36,18 +36,18 @@ class Employee extends Person {
     firstName,
     lastName,
     address,
-    id,
+    userId,
     email,
-    workday,
-    salary,
+    workDays,
+    dailySalary,
     userType
   ) {
-    super(firstName, lastName, address, id, email, userType);
-    this.workday = workday;
-    this.salary = salary;
+    super(firstName, lastName, address, userId, email, userType);
+    this.workDays = parseInt(workDays);
+    this.dailySalary = parseFloat(dailySalary);
   }
   calcul() {
-    return this.salary * this.workday;
+    return this.dailySalary * this.workDays;
   }
 }
 
@@ -56,14 +56,14 @@ class Customer extends Person {
     firstName,
     lastName,
     address,
-    id,
+    userId,
     email,
     companyName,
     invoiceValue,
     rating,
     userType
   ) {
-    super(firstName, lastName, id, email, address, userType);
+    super(firstName, lastName, userId, email, address, userType);
     this.rating = rating;
     this.companyName = companyName;
     this.invoiceValue = invoiceValue;
@@ -80,8 +80,14 @@ class ListPerson {
   saveLocalUser(key = "LIST_PERSON", value = this.people) {
     localStorage.setItem(key, JSON.stringify(value));
   }
-  getLocalStore(key = "LIST_PERSON", arrLocal = this.people) {
-    arrLocal = JSON.parse(localStorage.getItem(key));
+
+  getLocalStore(key = "LIST_PERSON") {
+    var arrLocal = JSON.parse(localStorage.getItem(key));
+    //   kiểm tra dữ liệu
+    if (arrLocal) {
+      this.people = arrLocal;
+      this.renderGUI();
+    }
   }
 
   deletePerson(value) {
@@ -89,5 +95,38 @@ class ListPerson {
     if (index != -1) {
       this.people.splice(index, 1);
     }
+    this.saveLocalUser();
+    this.renderGUI();
+  }
+  renderGUI(arr = this.people) {
+    var content = "";
+    for (let i = 0; i < arr.length; i++) {
+      const person = arr[i];
+      if (person) {
+        let { userId, firstName, lastName, email, address, userType } = person;
+        content += `
+        <tr>
+          <td>${userId}</td>               
+          <td>${firstName} ${lastName}</td>               
+          <td>${email}</td>               
+          <td>${address}</td>               
+          <td>${userType}</td>               
+          <td></td>
+          <td>
+           <button 
+        type="submit"
+       
+        class="btn btn-dark mb-2"
+        data-bs-toggle="modal"
+                data-bs-target="#myModal"
+        >Sửa</button>
+        <button class="btn btn-danger mb-2" onclick="((${userId})=>{this.deletePerson})" >Xoá</button>
+          </td>
+        </tr>
+      `;
+      }
+    }
+
+    getEl("tableDanhSach").innerHTML = content;
   }
 }

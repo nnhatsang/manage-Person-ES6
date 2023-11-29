@@ -1,11 +1,44 @@
-function getEl(value) {
-  return document.getElementById(value);
-}
-function queS(value) {
-  return document.querySelector(value);
-}
+const getEl = (value) => document.getElementById(value);
+const queS = (value) => document.querySelector(value);
+document.addEventListener("DOMContentLoaded", function () {
+  validateFormOnLoad();
+});
+
+const arrID = [
+    "userType",
+    "userId",
+    "firstName",
+    "lastName",
+    "email",
+    "address",
+  ],
+  arrTB = [
+    "spanUserType",
+    "spanUserId",
+    "spanFirsrName",
+    "spanLastName",
+    "spanEmail",
+    "spanAddress",
+  ];
+const validateFormOnLoad = () => {
+  const userType = getEl("userType").value;
+  let check = true;
+  // check &= validateFieldsByUserType(userType);
+  // const formInputs = document.querySelectorAll(
+  //   ".form-group input , .form-group select"
+  // );
+
+  // formInputs.forEach((input, index) => {
+  //   check &= validateField(input.id, arrTB[index]);
+  // });
+
+  console.log(check);
+  console.log(userType);
+  return check ? true : false;
+};
 const listPeople = new ListPerson();
 let arrPerson = listPeople.people;
+listPeople.getLocalStore();
 console.log(arrPerson);
 
 function showFields() {
@@ -18,15 +51,27 @@ function showFields() {
       additionalFieldsContainer.innerHTML += `
       <div class="form-group">
         <label for="math">Toán:</label>
-        <input type="text" class="form-control" id="math" placeholder="Nhập điểm Toán">
+        <input type="text" class="form-control" id="math" placeholder="Nhập điểm Toán"    
+                  oninput="validateField('math', 'spanMath')"
+>
+        <span id="spanMath" class="text-danger"></span>
+
       </div>
       <div class="form-group">
         <label for="physics">Lý:</label>
-        <input type="text" class="form-control" id="physics" placeholder="Nhập điểm Lý">
+        <input type="text" class="form-control" id="physics" placeholder="Nhập điểm Lý"
+                  oninput="validateField('physics', 'spanPhysics')"
+
+        >
+        <span id="spanPhysics" class="text-danger"></span>
       </div>
       <div class="form-group">
         <label for="chemistry">Hóa:</label>
-        <input type="text" class="form-control" id="chemistry" placeholder="Nhập điểm Hóa">
+        <input type="text" class="form-control" id="chemistry" placeholder="Nhập điểm Hóa"
+                  oninput="validateField('chemistry', 'spanChemistry')"
+        >
+        <span id="spanChemistry" class="text-danger"></span>
+        
       </div>
     `;
       break;
@@ -34,11 +79,18 @@ function showFields() {
       additionalFieldsContainer.innerHTML += `
       <div class="form-group">
         <label for="workDays">Số Ngày Làm Việc:</label>
-        <input type="text" class="form-control" id="workDays" placeholder="Nhập số ngày làm việc">
+        <input type="text" class="form-control" id="workDays" placeholder="Nhập số ngày làm việc"
+                  oninput="validateField('workDays', 'spanWorkDays')"
+        >
+        <span id="spanWorkDays" class="text-danger"></span>
+
       </div>
       <div class="form-group">
         <label for="dailySalary">Lương Theo Ngày:</label>
-        <input type="text" class="form-control" id="dailySalary" placeholder="Nhập lương theo ngày">
+        <input type="text" class="form-control" id="dailySalary" placeholder="Nhập lương theo ngày"
+                  oninput="validateField('dailySalary', 'spanDailySalary')"
+        >
+        <span id="spanDailySalary" class="text-danger"></span>
       </div>
     `;
       break;
@@ -46,15 +98,24 @@ function showFields() {
       additionalFieldsContainer.innerHTML += `
       <div class="form-group">
         <label for="companyName">Tên Công Ty:</label>
-        <input type="text" class="form-control" id="companyName" placeholder="Nhập tên công ty">
+        <input type="text" class="form-control" id="companyName" placeholder="Nhập tên công ty"
+                  oninput="validateField('companyName', 'spanCompanyName')"
+        >
+        <span id="spanCompanyName" class="text-danger"></span>
       </div>
       <div class="form-group">
         <label for="invoiceValue">Trị Giá Hóa Đơn:</label>
-        <input type="text" class="form-control" id="invoiceValue" placeholder="Nhập trị giá hóa đơn">
+        <input type="text" class="form-control" id="invoiceValue" placeholder="Nhập trị giá hóa đơn"
+                  oninput="validateField('invoiceValue', 'spanInvoiceValue')"
+        >
+        <span id="spanInvoiceValue" class="text-danger"></span>
       </div>
       <div class="form-group">
         <label for="rating">Đánh Giá:</label>
-        <input type="text" class="form-control" id="rating" placeholder="Nhập đánh giá">
+        <input type="text" class="form-control" id="rating" placeholder="Nhập đánh giá"
+                  oninput="validateField('rating', 'spanRating')"
+        >
+        <span id="spanRating" class="text-danger"></span>
       </div>
     `;
       break;
@@ -64,7 +125,8 @@ function showFields() {
   }
 }
 
-function saveUser() {
+function addUser() {
+  event.preventDefault();
   const userType = queS("#userType").value;
   const id = queS("#userId").value;
   const firstName = queS("#firstName").value;
@@ -72,6 +134,7 @@ function saveUser() {
   const email = queS("#email").value;
   const address = queS("#address").value;
   listPeople.getLocalStore();
+
   let additionalFields;
   switch (userType) {
     case "Student":
@@ -139,37 +202,17 @@ function saveUser() {
       );
       break;
   }
+  let isValid = validateFormOnLoad();
+  console.log(isValid);
+
   console.log(newPerson);
-
-  listPeople.addPerson(newPerson);
-  listPeople.saveLocalUser();
-  document.querySelector("form").reset();
-  getEl("additionalFields").innerHTML = "";
-  $("#myModal").modal("hide");
+  console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssss", isValid);
+  if (isValid) {
+    listPeople.addPerson(newPerson);
+    listPeople.saveLocalUser();
+    document.querySelector("form").reset();
+    listPeople.renderGUI();
+    getEl("additionalFields").innerHTML = "";
+    $("#myModal").modal("hide");
+  }
 }
-
-// function renderGUI(arr = listPeople) {
-//   var content = "";
-//   for (let i = 0; i < arr.length; i++) {
-//     var person = arr[i];
-//     var diemTB =
-//       (person.diemToan + person.diemLy + person.diemHoa + person.diemRenLuyen) /
-//       4;
-//     content += `
-//         <tr class="table-dark">
-//               <td scope="row">${person.maperson}</td>
-//               <td>${person.tenperson}</td>
-//               <td>${person.loaiperson}</td>
-//               <td>${diemTB}</td>
-//               <td>${person.email}</td>
-//               <td>${person.soDienThoai}</td>
-//               <td>
-//                 <button type="button" class="btn btn-danger" onclick="deleteUser('${sinhVien.maSinhVien}')">Xoá</button>
-//       <button class="btn btn-warning" onclick="getInfoUser('${sinhVien.maSinhVien}')">Sửa</button>
-//               </td>
-//             </tr>
-//         `;
-//   }
-//   queS("tableDanhSach").innerHTML = content;
-// }
-console.log(listPeople.people);

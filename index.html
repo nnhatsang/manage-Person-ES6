@@ -30,6 +30,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <!-- <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script> -->
 
     <!-- (Optional) Use CSS or JS implementation -->
   </head>
@@ -70,6 +73,7 @@
             <th class="col-3">Họ và tên</th>
             <th class="col-2">Email</th>
             <th class="col-2">Địa chỉ</th>
+            <th class="col-2">Người dùng</th>
             <th class="col-1">Xem chi tiết</th>
             <th class="col-2">Actions</th>
           </tr>
@@ -77,7 +81,7 @@
         <tbody id="tableDanhSach"></tbody>
       </table>
     </div>
-    <div class="modal" id="myModal">
+    <div class="modal fade" id="myModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <!-- Modal Header -->
@@ -95,19 +99,21 @@
 
           <!-- Modal Body -->
           <div class="modal-body">
-            <form id="userForm ">
+            <form id="userForm space-y-5" onsubmit="addUser()">
               <div class="form-group">
                 <label for="userType">Loại Người Dùng:</label>
                 <select
                   class="form-control"
                   id="userType"
                   onchange="showFields()"
+                  oninput="validateField('userType', 'spanUserType')"
                 >
                   <option value="">Chọn người dùng</option>
                   <option value="Student">Sinh Viên</option>
                   <option value="Employee">Giảng Viên</option>
                   <option value="Customer">Khách Hàng</option>
                 </select>
+                <span id="spanUserType" class="text-danger"></span>
               </div>
               <div class="form-group">
                 <label for="userId">Id:</label>
@@ -116,7 +122,9 @@
                   class="form-control"
                   id="userId"
                   placeholder="Nhập mã người dùng"
+                  oninput="validateField('userId', 'spanUserId')"
                 />
+                <span id="spanUserId" class="text-danger"></span>
               </div>
               <div class="form-group">
                 <label for="firstName">Họ:</label>
@@ -125,7 +133,9 @@
                   class="form-control"
                   id="firstName"
                   placeholder="Nhập Họ"
+                  oninput="validateField('firstName', 'spanFirsrName')"
                 />
+                <span id="spanFirsrName" class="text-danger"></span>
               </div>
               <div class="form-group">
                 <label for="lastName">Tên:</label>
@@ -134,7 +144,9 @@
                   class="form-control"
                   id="lastName"
                   placeholder="Nhập Tên"
+                  oninput="validateField('lastName', 'spanLastName')"
                 />
+                <span id="spanLastName" class="text-danger"></span>
               </div>
               <div class="form-group">
                 <label for="email">Email:</label>
@@ -143,26 +155,25 @@
                   class="form-control"
                   id="email"
                   placeholder="Nhập Email"
+                  oninput="validateField('email', 'spanEmail')"
                 />
+                <span id="spanEmail" class="text-danger"></span>
               </div>
               <div class="form-group">
-                <label for="address">Địa Chỉ:</label>
+                <label for="address">Địa chỉ:</label>
                 <input
-                  type="text"
+                  type="address"
                   class="form-control"
                   id="address"
-                  placeholder="Nhập Địa Chỉ"
+                  placeholder="Nhập địa chỉ"
+                  oninput="validateField('address', 'spanAddress')"
                 />
+                <span id="spanAddress" class="text-danger"></span>
               </div>
+
               <!-- Add more fields based on the user type using JavaScript -->
               <div id="additionalFields"></div>
-              <button
-                type="button"
-                class="btn btn-success"
-                onclick="saveUser()"
-              >
-                Lưu
-              </button>
+              <button type="submit" class="btn btn-success">Lưu</button>
             </form>
           </div>
         </div>
@@ -188,6 +199,7 @@
     ></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="model/Person.js"></script>
+    <script src="validation/validation.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
