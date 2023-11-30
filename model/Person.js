@@ -74,6 +74,7 @@ class ListPerson {
   constructor() {
     this.people = [];
   }
+
   addPerson(value) {
     this.people.push(value);
   }
@@ -82,51 +83,66 @@ class ListPerson {
   }
 
   getLocalStore(key = "LIST_PERSON") {
-    var arrLocal = JSON.parse(localStorage.getItem(key));
-    //   kiểm tra dữ liệu
-    if (arrLocal) {
-      this.people = arrLocal;
-      this.renderGUI();
-    }
+    return JSON.parse(localStorage.getItem(key));
+    // let arrLocal = JSON.parse(localStorage.getItem(key));
+    // // //   kiểm tra dữ liệu
+    // if (arrLocal) {
+    //   this.people = arrLocal;
+    //   this.renderGUI();
+    // }
   }
 
-  deletePerson(value) {
-    const index = this.people.indexOf(value);
-    if (index != -1) {
-      this.people.splice(index, 1);
-    }
-    this.saveLocalUser();
+  deletePerson(id) {
+    let newArr = this.getLocalStore().filter((i) => i.userId != id);
+    console.log("local", newArr);
+    // let arr = this.people;
+    // const index = arr.findIndex((person) => person.userId === userId);
+    // console.log(this.people);
+
+    // if (index != -1) {
+    //   this.people.splice(index, 1);
+    // }
+
+    this.saveLocalUser("LIST_PERSON", newArr);
     this.renderGUI();
   }
-  renderGUI(arr = this.people) {
+  renderGUI() {
+    let arr = this.getLocalStore();
     var content = "";
     for (let i = 0; i < arr.length; i++) {
-      const person = arr[i];
-      if (person) {
-        let { userId, firstName, lastName, email, address, userType } = person;
-        content += `
+      let valuePerson = arr[i];
+      const person = new Person();
+      Object.assign(person, valuePerson);
+      console.log(person);
+      let { userId, firstName, lastName, email, address, userType } = person;
+      content += `
         <tr>
-          <td>${userId}</td>               
-          <td>${firstName} ${lastName}</td>               
-          <td>${email}</td>               
-          <td>${address}</td>               
-          <td>${userType}</td>               
-          <td></td>
+          <td>${userId}</td>
+          <td>${firstName} ${lastName}</td>
+          <td>${email}</td>
+          <td>${address}</td>
+          <td>${userType}</td>
           <td>
-           <button 
+           <button class="btn btn-warning text-black mb-2"  data-bs-toggle="modal"
+                data-bs-target="#myModal" onclick="detailPerson('${userId}')" >Xem</button></td>
+          <td>
+           <button
         type="submit"
-       
+
         class="btn btn-dark mb-2"
         data-bs-toggle="modal"
                 data-bs-target="#myModal"
         >Sửa</button>
-        <button class="btn btn-danger mb-2" onclick="((${userId})=>{this.deletePerson})" >Xoá</button>
+        <button class="btn btn-danger mb-2" onclick="deletePerson('${userId}')" >Xoá</button>
           </td>
         </tr>
       `;
-      }
     }
 
     getEl("tableDanhSach").innerHTML = content;
+  }
+
+  detailPerson(person) {
+    console.log(person);
   }
 }

@@ -98,8 +98,8 @@
           </div>
 
           <!-- Modal Body -->
-          <div class="modal-body">
-            <form id="userForm space-y-5" onsubmit="addUser()">
+          <div class="modal-body" >
+            <form id="userForm space-y-5" role="form" onsubmit="addUser()">
               <div class="form-group">
                 <label for="userType">Loại Người Dùng:</label>
                 <select
@@ -126,7 +126,7 @@
                 />
                 <span id="spanUserId" class="text-danger"></span>
               </div>
-              <div class="form-group">
+              <div class="form-group">g
                 <label for="firstName">Họ:</label>
                 <input
                   type="text"
@@ -173,7 +173,22 @@
 
               <!-- Add more fields based on the user type using JavaScript -->
               <div id="additionalFields"></div>
-              <button type="submit" class="btn btn-success">Lưu</button>
+               <div class="modal-footer" id="modal-footer">
+                <button id="btnThemNV" type="submit" class="btn btn-success">
+                  Thêm người dùng
+                </button>
+                <button id="btnCapNhat" type="button" class="btn btn-success">
+                  Cập nhật
+                </button>
+                <button
+                  id="btnDong"
+                  type="button"
+                  class="btn btn-danger"
+                  data-dismiss="modal"
+                >
+                  Đóng
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -197,7 +212,10 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      type="module"
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    ></script>
     <script src="model/Person.js"></script>
     <script src="validation/validation.js"></script>
     <script src="js/main.js"></script>

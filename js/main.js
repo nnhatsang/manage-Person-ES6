@@ -1,8 +1,5 @@
 const getEl = (value) => document.getElementById(value);
 const queS = (value) => document.querySelector(value);
-document.addEventListener("DOMContentLoaded", function () {
-  validateFormOnLoad();
-});
 
 const arrID = [
     "userType",
@@ -11,6 +8,14 @@ const arrID = [
     "lastName",
     "email",
     "address",
+    "math",
+    "physics",
+    "chemistry",
+    "workDays",
+    "dailySalary",
+    "companyName",
+    "invoiceValue",
+    "rating",
   ],
   arrTB = [
     "spanUserType",
@@ -19,28 +24,48 @@ const arrID = [
     "spanLastName",
     "spanEmail",
     "spanAddress",
+    "spanMath",
+    "spanPhysics",
+    "spanChemistry",
+    "spanWorkDays",
+    "spanDailySalary",
+    "spanCompanyName",
+    "spanInvoiceValue",
+    "spanRating",
   ];
 const validateFormOnLoad = () => {
   const userType = getEl("userType").value;
-  let check = true;
-  // check &= validateFieldsByUserType(userType);
-  // const formInputs = document.querySelectorAll(
-  //   ".form-group input , .form-group select"
-  // );
+  let checkType = true;
+  let checkInp = true;
+  checkType &= validateFieldsByUserType(userType);
+  const formInputs = document.querySelectorAll(".form-group input ");
 
-  // formInputs.forEach((input, index) => {
-  //   check &= validateField(input.id, arrTB[index]);
-  // });
+  formInputs.forEach((input, index) => {
+    checkInp &= validateField(input.id, arrTB[index]);
+  });
 
-  console.log(check);
-  console.log(userType);
-  return check ? true : false;
+  return checkType && checkInp ? true : false;
 };
-const listPeople = new ListPerson();
-let arrPerson = listPeople.people;
-listPeople.getLocalStore();
-console.log(arrPerson);
+document.addEventListener("DOMContentLoaded", function () {
+  validateFormOnLoad();
+});
 
+const listPeople = new ListPerson();
+listPeople.getLocalStore();
+let renderGUI = () => {
+  listPeople.renderGUI();
+};
+let detailPerson = (person) => {
+  listPeople.detailPerson(person);
+};
+let saveLocalUser = () => {
+  listPeople.saveLocalUser();
+};
+
+let deletePerson = (id) => {
+  listPeople.deletePerson(id);
+};
+renderGUI();
 function showFields() {
   const userType = getEl("userType").value;
   const additionalFieldsContainer = getEl("additionalFields");
@@ -49,14 +74,20 @@ function showFields() {
   switch (userType) {
     case "Student":
       additionalFieldsContainer.innerHTML += `
-      <div class="form-group">
-        <label for="math">Toán:</label>
-        <input type="text" class="form-control" id="math" placeholder="Nhập điểm Toán"    
+             <div class="form-group">
+                <label for="math">Địa chỉ:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="math"
+                  placeholder="Nhập điểm Toán"
                   oninput="validateField('math', 'spanMath')"
->
-        <span id="spanMath" class="text-danger"></span>
+                />
+                <span id="spanMath" class="text-danger"></span>
+              </div>
 
-      </div>
+      
+      
       <div class="form-group">
         <label for="physics">Lý:</label>
         <input type="text" class="form-control" id="physics" placeholder="Nhập điểm Lý"
@@ -128,7 +159,7 @@ function showFields() {
 function addUser() {
   event.preventDefault();
   const userType = queS("#userType").value;
-  const id = queS("#userId").value;
+  const userId = queS("#userId").value;
   const firstName = queS("#firstName").value;
   const lastName = queS("#lastName").value;
   const email = queS("#email").value;
@@ -163,10 +194,10 @@ function addUser() {
   switch (userType) {
     case "Student":
       newPerson = new Student(
-        id,
         firstName,
         lastName,
         address,
+        userId,
         email,
         additionalFields.math,
         additionalFields.physics,
@@ -177,10 +208,10 @@ function addUser() {
       break;
     case "Employee":
       newPerson = new Employee(
-        id,
         firstName,
         lastName,
         address,
+        userId,
         email,
         additionalFields.workDays,
         additionalFields.dailySalary,
@@ -190,10 +221,10 @@ function addUser() {
       break;
     case "Customer":
       newPerson = new Customer(
-        id,
         firstName,
         lastName,
         address,
+        userId,
         email,
         additionalFields.companyName,
         additionalFields.invoiceValue,
@@ -203,15 +234,15 @@ function addUser() {
       break;
   }
   let isValid = validateFormOnLoad();
-  console.log(isValid);
+  // console.log(isValid);
 
-  console.log(newPerson);
+  // console.log(newPerson);
   console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssss", isValid);
   if (isValid) {
     listPeople.addPerson(newPerson);
-    listPeople.saveLocalUser();
+    saveLocalUser();
     document.querySelector("form").reset();
-    listPeople.renderGUI();
+    renderGUI();
     getEl("additionalFields").innerHTML = "";
     $("#myModal").modal("hide");
   }

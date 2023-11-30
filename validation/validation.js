@@ -1,6 +1,4 @@
 function checkEmptyValue(value, idSpan) {
-  console.log("first", idSpan);
-  console.log("fifdfdrst", value);
   if (value == "") {
     getEl(idSpan).innerHTML = "Vui lòng không bỏ trống";
     return false;
@@ -12,7 +10,6 @@ function checkEmptyValue(value, idSpan) {
 function checkEmail(value, idSpan) {
   var regexMail =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  //   sử dụng phương thức test để kiểm tra dữ liệu đầu vào có thoả mãn không
   if (!regexMail.test(value)) {
     document.getElementById(idSpan).innerHTML = "Khônng hợp lệ";
 
@@ -60,7 +57,6 @@ function validateCustomerFields() {
 function validateField(value, idSpan) {
   event.preventDefault();
   const field = document.getElementById(value).value;
-  const error = document.getElementById(idSpan);
 
   switch (value) {
     case "userType":
@@ -80,12 +76,10 @@ function validateField(value, idSpan) {
     case "invoiceValue":
       return checkEmptyValue(field, idSpan) && regexNumInput(field, idSpan);
     default:
-      return true ? (error.innerHTML = "") : "Còn lỗi";
-      break;
+      return false;
   }
 }
 function validateFieldsByUserType(userType) {
-  if (userType == "") return "Chưa chọn người dùng";
   switch (userType) {
     case "Student":
       return validateStudentFields();
@@ -94,6 +88,6 @@ function validateFieldsByUserType(userType) {
     case "Customer":
       return validateCustomerFields();
     default:
-      return true;
+      return false;
   }
 }
