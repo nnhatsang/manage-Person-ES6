@@ -92,8 +92,7 @@ class ListPerson {
     this.saveLocalUser("LIST_PERSON", newArr);
     this.renderGUI();
   }
-  renderGUI() {
-    let arr = this.getLocalStore();
+  renderGUI(arr = this.getLocalStore()) {
     var content = "";
     for (let i = 0; i < arr.length; i++) {
       let valuePerson = arr[i];
@@ -136,15 +135,15 @@ class ListPerson {
     // Lấy thông tin người dùng từ localStorage hoặc một nguồn dữ liệu khác
     return this.findPersonById(userId);
   }
-  editInfoUser(value) {
-    let indexUser = this.getLocalStore().findIndex(
-      (item) => item.userId == value.userId
-    );
-    console.log(indexUser);
-    if (indexUser != -1) {
-      this.people[indexUser] = userId;
-      this.renderGUI(this.people);
-      this.setLocalStorage(this.people);
-    }
-  }
+  // editInfoUser(value) {
+  //   let indexUser = this.getLocalStore().findIndex(
+  //     (item) => item.userId == value.userId
+  //   );
+  //   console.log(indexUser);
+  //   if (indexUser != -1) {
+  //     this.people[indexUser] = userId;
+  //     this.renderGUI(this.people);
+  //     this.setLocalStorage(this.people);
+  //   }
+  // }
 }

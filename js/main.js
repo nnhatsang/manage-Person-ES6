@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const listPeople = new ListPerson();
+console.log(listPeople.people);
 listPeople.getLocalStore();
 let renderGUI = () => {
   listPeople.renderGUI();
@@ -309,7 +310,53 @@ function showDetail(userId) {
     console.log(`User with userId ${userId} not found.`);
   }
 }
-getEl("btnCapNhat").onclick = listPeople.editInfoUser();
+getEl("btnCapNhat").onclick = updatePerson;
+
+function updatePerson() {
+  // Get the user ID from the modal
+  const userId = getEl("userId").value;
+  let arr = listPeople.getLocalStore();
+  console.log(arr);
+  // Find the index of the person in the array
+  const index = arr.findIndex((p) => p.userId === userId);
+  console.log(index);
+  // Update the person's information
+  arr[index].userId = getEl("userId").value;
+  arr[index].firstName = getEl("firstName").value;
+  arr[index].lastName = getEl("lastName").value;
+  arr[index].email = getEl("email").value;
+  arr[index].address = getEl("address").value;
+  arr[index].userType = getEl("userType").value;
+
+  console.log(arr[index].math);
+  // Update additional fields based on userType
+  switch (arr[index].userType) {
+    case "Student":
+      arr[index].math = getEl("math").value;
+      arr[index].physics = getEl("physics").value;
+      arr[index].chemistry = getEl("chemistry").value;
+      break;
+    case "Employee":
+      arr[index].workDays = getEl("workDays").value;
+      arr[index].dailySalary = getEl("dailySalary").value;
+      break;
+    case "Customer":
+      arr[index].companyName = getEl("companyName").value;
+      arr[index].invoiceValue = getEl("invoiceValue").value;
+      arr[index].rating = getEl("rating").value;
+      break;
+    default:
+      break;
+  }
+  console.log(arr);
+  // Update the GUI to reflect the changes
+  saveLocalUser("LIST_PERSON", arr);
+  console.log(saveLocalUser);
+  renderGUI();
+
+  // Close the modal
+  $("#myModal").modal("hide");
+}
 function showDetailModal(person) {
   // Gán thông tin từ person vào modal
   document.getElementById("modalUserId").innerText = person.userId;
