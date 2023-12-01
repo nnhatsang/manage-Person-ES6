@@ -71,6 +71,10 @@ let saveLocalUser = () => {
 let deletePerson = (id) => {
   listPeople.deletePerson(id);
 };
+let addPerson = (value) => {
+  listPeople.addPerson(value);
+  saveLocalUser();
+};
 renderGUI();
 function showFields() {
   const userType = getEl("userType").value;
@@ -245,12 +249,24 @@ function addUser() {
   // console.log(newPerson);
   console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssss", isValid);
   if (isValid) {
-    listPeople.addPerson(newPerson);
-    saveLocalUser();
+    addPerson(newPerson);
     document.querySelector("form").reset();
     renderGUI();
     getEl("additionalFields").innerHTML = "";
     $("#myModal").modal("hide");
+  }
+}
+
+function showDetail(userId) {
+  // Tìm người dùng trong danh sách dựa trên userId
+  let selectedUser = listPeople
+    .getLocalStore()
+    .find((user) => user.userId === userId);
+  console.log(selectedUser);
+  if (selectedUser) {
+    showDetailModal(selectedUser);
+  } else {
+    console.log(`User with userId ${userId} not found.`);
   }
 }
 function showDetailModal(person) {
@@ -261,8 +277,6 @@ function showDetailModal(person) {
   document.getElementById("modalEmail").innerText = person.email;
   document.getElementById("modalAddress").innerText = person.address;
   document.getElementById("modalUserType").innerText = person.userType;
-
-  // Gọi hàm để hiển thị thông tin chi tiết của từng loại người dùng
   switch (person.userType) {
     case "Student":
       showStudentDetails(person);
@@ -276,33 +290,28 @@ function showDetailModal(person) {
     default:
       break;
   }
-
-  // Hiển thị modal
   $("#detailModal").modal("show");
 }
 
-// Hàm hiển thị thông tin chi tiết cho Sinh viên
 function showStudentDetails(student) {
   const modalInfoDetail = document.getElementById("modalInfoDetail");
   modalInfoDetail.innerHTML = `
     <p><strong>Math:</strong> ${student.math}</p>
     <p><strong>Physics:</strong> ${student.physics}</p>
     <p><strong>Chemistry:</strong> ${student.chemistry}</p>
-    <p><strong>Average:</strong> ${student.calculAverage()}</p>
+    <p><strong>Average:</strong> ${student.calculAverage}</p>
   `;
 }
 
-// Hàm hiển thị thông tin chi tiết cho Nhân viên
 function showEmployeeDetails(employee) {
   const modalInfoDetail = document.getElementById("modalInfoDetail");
   modalInfoDetail.innerHTML = `
     <p><strong>Work Days:</strong> ${employee.workDays}</p>
     <p><strong>Daily Salary:</strong> ${employee.dailySalary}</p>
-    <p><strong>Total Salary:</strong> ${employee.calcul()}</p>
+    <p><strong>Total Salary:</strong> ${employee.calcul}</p>
   `;
 }
 
-// Hàm hiển thị thông tin chi tiết cho Khách hàng
 function showCustomerDetails(customer) {
   const modalInfoDetail = document.getElementById("modalInfoDetail");
   modalInfoDetail.innerHTML = `

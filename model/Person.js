@@ -109,17 +109,17 @@ class ListPerson {
           <td>${address}</td>
           <td>${userType}</td>
           <td>
-           <button class="btn btn-warning text-black mb-2" 
-                  onclick="showDetailModal('${userId}')" >Xem</button></td>
+           <button class="btn btn-warning text-black mb-2 " 
+                  onclick="showDetail('${userId}')" >Xem</button></td>
           <td>
            <button
         type="submit"
 
-        class="btn btn-dark mb-2"
+        class="btn btn-dark mb-2 px-4"
         data-bs-toggle="modal"
                 data-bs-target="#myModal"
         >Sửa</button>
-        <button class="btn btn-danger mb-2" onclick="deletePerson('${userId}')" >Xoá</button>
+        <button class="btn btn-danger mb-2 px-4" onclick="deletePerson('${userId}')" >Xoá</button>
           </td>
         </tr>
       `;
