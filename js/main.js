@@ -413,3 +413,28 @@ function showCustomerDetails(customer) {
     <p><strong>Rating:</strong> ${customer.rating}</p>
   `;
 }
+//
+(function sort1(a, b) {
+  return a - b;
+});
+(function sort9(a, b) {
+  return a - b;
+});
+getEl("SapXepTang").addEventListener("click", function () {
+  getEl("SapXepTang").style.display = "none";
+  getEl("SapXepGiam").style.display = "block";
+  // console.log("dsNhanVien", dsNhanVien);
+  var arrSort = listPeople.getLocalStore().sort(function (a, b) {
+    return a.firstName.localeCompare(b.firstName);
+  });
+  listPeople.renderGUI(arrSort);
+});
+
+getEl("SapXepGiam").addEventListener("click", function () {
+  getEl("SapXepGiam").style.display = "none";
+  getEl("SapXepTang").style.display = "block";
+  var arrSort = listPeople.getLocalStore().sort(function (a, b) {
+    return b.firstName.localeCompare(a.firstName);
+  });
+  listPeople.renderGUI(arrSort);
+});

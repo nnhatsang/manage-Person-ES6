@@ -98,7 +98,7 @@ class ListPerson {
       let valuePerson = arr[i];
       const person = new Person();
       Object.assign(person, valuePerson);
-      console.log(person);
+      // console.log(person);
       let { userId, firstName, lastName, email, address, userType } = person;
       content += `
         <tr>
