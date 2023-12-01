@@ -438,3 +438,29 @@ getEl("SapXepGiam").addEventListener("click", function () {
   });
   listPeople.renderGUI(arrSort);
 });
+
+getEl("filterRole").onchange = () => {
+  let checkInputRender = document.getElementById("filterRole").value;
+
+  if (checkInputRender == "all") {
+    renderGUI();
+  }
+  if (checkInputRender == "Student") {
+    let renderAllStudent = listPeople
+      .getLocalStore()
+      .filter((item) => item.userType == "Student");
+    listPeople.renderGUI(renderAllStudent);
+  }
+  if (checkInputRender == "Employee") {
+    let renderAllEmployee = listPeople
+      .getLocalStore()
+      .arrListPerson.filter((item) => item.userType == "Employee");
+    listPeople.renderGUI(renderAllEmployee);
+  }
+  if (checkInputRender == "Customer") {
+    let renderAllCustomer = listPeople
+      .getLocalStore()
+      .arrListPerson.filter((item) => item.userType == "Customer");
+    listPeople.renderGUI(renderAllCustomer);
+  }
+};
