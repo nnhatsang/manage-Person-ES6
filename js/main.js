@@ -257,11 +257,51 @@ function addUser() {
   }
 }
 
+function getPerson(userId) {
+  // Assuming you have the arr variable containing your list of persons
+  let person = listPeople.detailPerson(userId);
+
+  // Set the modal fields with the person's information
+  getEl("userId").value = person.userId;
+  getEl("firstName").value = person.firstName;
+  getEl("lastName").value = person.lastName;
+  getEl("email").value = person.email;
+  getEl("address").value = person.address;
+  getEl("userType").value = person.userType;
+
+  // Trigger the function to show additional fields based on userType
+  showFields();
+
+  // Set additional fields based on userType
+  switch (person.userType) {
+    case "Student":
+      getEl("math").value = person.math || "";
+      getEl("physics").value = person.physics || "";
+      getEl("chemistry").value = person.chemistry || "";
+      break;
+    case "Employee":
+      getEl("workDays").value = person.workDays || "";
+      getEl("dailySalary").value = person.dailySalary || "";
+      break;
+    case "Customer":
+      getEl("companyName").value = person.companyName || "";
+      getEl("invoiceValue").value = person.invoiceValue || "";
+      getEl("rating").value = person.rating || "";
+      break;
+    default:
+      break;
+  }
+
+  // Change the submit button to update mode
+  getEl("btnThemNV").style.display = "none";
+  getEl("btnCapNhat").style.display = "block";
+
+  // Show the modal
+  $("#myModal").modal("show");
+}
 function showDetail(userId) {
   // Tìm người dùng trong danh sách dựa trên userId
-  let selectedUser = listPeople
-    .getLocalStore()
-    .find((user) => user.userId === userId);
+  let selectedUser = listPeople.detailPerson(userId);
   console.log(selectedUser);
   if (selectedUser) {
     showDetailModal(selectedUser);
@@ -269,6 +309,7 @@ function showDetail(userId) {
     console.log(`User with userId ${userId} not found.`);
   }
 }
+getEl("btnCapNhat").onclick = listPeople.editInfoUser();
 function showDetailModal(person) {
   // Gán thông tin từ person vào modal
   document.getElementById("modalUserId").innerText = person.userId;

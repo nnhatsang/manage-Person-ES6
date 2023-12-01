@@ -118,6 +118,7 @@ class ListPerson {
         class="btn btn-dark mb-2 px-4"
         data-bs-toggle="modal"
                 data-bs-target="#myModal"
+                onclick="getPerson('${userId}')"
         >Sửa</button>
         <button class="btn btn-danger mb-2 px-4" onclick="deletePerson('${userId}')" >Xoá</button>
           </td>
@@ -133,15 +134,17 @@ class ListPerson {
   }
   detailPerson(userId) {
     // Lấy thông tin người dùng từ localStorage hoặc một nguồn dữ liệu khác
-   return this.findPersonById(userId);
-
-    // if (person) {
-    //   // Hiển thị thông tin chi tiết trong modal
-    //   showPersonDetails(person);
-
-    //   // Mở modal
-    // } else {
-    //   console.error(`Person with userId ${userId} not found.`);
-    // }
+    return this.findPersonById(userId);
+  }
+  editInfoUser(value) {
+    let indexUser = this.getLocalStore().findIndex(
+      (item) => item.userId == value.userId
+    );
+    console.log(indexUser);
+    if (indexUser != -1) {
+      this.people[indexUser] = userId;
+      this.renderGUI(this.people);
+      this.setLocalStorage(this.people);
+    }
   }
 }
