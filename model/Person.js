@@ -84,25 +84,11 @@ class ListPerson {
 
   getLocalStore(key = "LIST_PERSON") {
     return JSON.parse(localStorage.getItem(key));
-    // let arrLocal = JSON.parse(localStorage.getItem(key));
-    // // //   kiểm tra dữ liệu
-    // if (arrLocal) {
-    //   this.people = arrLocal;
-    //   this.renderGUI();
-    // }
   }
 
   deletePerson(id) {
     let newArr = this.getLocalStore().filter((i) => i.userId != id);
     console.log("local", newArr);
-    // let arr = this.people;
-    // const index = arr.findIndex((person) => person.userId === userId);
-    // console.log(this.people);
-
-    // if (index != -1) {
-    //   this.people.splice(index, 1);
-    // }
-
     this.saveLocalUser("LIST_PERSON", newArr);
     this.renderGUI();
   }
@@ -123,8 +109,8 @@ class ListPerson {
           <td>${address}</td>
           <td>${userType}</td>
           <td>
-           <button class="btn btn-warning text-black mb-2"  data-bs-toggle="modal"
-                data-bs-target="#myModal" onclick="detailPerson('${userId}')" >Xem</button></td>
+           <button class="btn btn-warning text-black mb-2" 
+                  onclick="showDetailModal('${userId}')" >Xem</button></td>
           <td>
            <button
         type="submit"
@@ -141,8 +127,21 @@ class ListPerson {
 
     getEl("tableDanhSach").innerHTML = content;
   }
+  findPersonById(userId) {
+    let arr = listPeople.getLocalStore();
+    return arr.find((person) => person.userId === userId);
+  }
+  detailPerson(userId) {
+    // Lấy thông tin người dùng từ localStorage hoặc một nguồn dữ liệu khác
+   return this.findPersonById(userId);
 
-  detailPerson(person) {
-    console.log(person);
+    // if (person) {
+    //   // Hiển thị thông tin chi tiết trong modal
+    //   showPersonDetails(person);
+
+    //   // Mở modal
+    // } else {
+    //   console.error(`Person with userId ${userId} not found.`);
+    // }
   }
 }

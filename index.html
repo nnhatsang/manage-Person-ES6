@@ -81,6 +81,61 @@
         <tbody id="tableDanhSach"></tbody>
       </table>
     </div>
+      <div
+             class="modal fade"
+             id="detailModal"
+             tabindex="-1"
+             aria-labelledby="detailModalLabel"
+             aria-hidden="true"
+           >
+             <div class="modal-dialog modal-dialog-centered modal-lg">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <h5 class="modal-title" id="detailModalLabel">
+                     Thông Tin Chi Tiết
+                   </h5>
+                   <button
+                     type="button"
+                     class="btn-close"
+                     data-bs-dismiss="modal"
+                     aria-label="Close"
+                   ></button>
+                 </div>
+                 <!-- Thêm phần tử HTML này để hiển thị thông tin chi tiết -->
+                 <div class="modal-body">
+                   <p>
+                     <strong>User ID:</strong> <span id="modalUserId"></span>
+                   </p>
+                   <p>
+                     <strong>First Name:</strong>
+                     <span id="modalFirstName"></span>
+                   </p>
+                   <p>
+                     <strong>Last Name:</strong>
+                     <span id="modalLastName"></span>
+                   </p>
+                   <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                   <p>
+                     <strong>Address:</strong> <span id="modalAddress"></span>
+                   </p>
+                   <p>
+                     <strong>User Type:</strong>
+                     <span id="modalUserType"></span>
+                   </p>
+                   <div id="modalInfoDetail"></div>
+                 </div>
+                 <div class="modal-footer">
+                   <button
+                     type="button"
+                     class="btn btn-secondary"
+                     data-bs-dismiss="modal"
+                   >
+                     Đóng
+                   </button>
+                 </div>
+               </div>
+             </div>
+           </div>
     <div class="modal fade" id="myModal">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -98,7 +153,7 @@
           </div>
 
           <!-- Modal Body -->
-          <div class="modal-body" >
+          <div class="modal-body">
             <form id="userForm space-y-5" role="form" onsubmit="addUser()">
               <div class="form-group">
                 <label for="userType">Loại Người Dùng:</label>
@@ -126,7 +181,7 @@
                 />
                 <span id="spanUserId" class="text-danger"></span>
               </div>
-              <div class="form-group">g
+              <div class="form-group">
                 <label for="firstName">Họ:</label>
                 <input
                   type="text"
@@ -173,7 +228,7 @@
 
               <!-- Add more fields based on the user type using JavaScript -->
               <div id="additionalFields"></div>
-               <div class="modal-footer" id="modal-footer">
+              <div class="modal-footer" id="modal-footer">
                 <button id="btnThemNV" type="submit" class="btn btn-success">
                   Thêm người dùng
                 </button>
@@ -190,10 +245,13 @@
                 </button>
               </div>
             </form>
+           
           </div>
+        
         </div>
       </div>
     </div>
+    
     <!-- Bootstrap JavaScript Libraries -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
