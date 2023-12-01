@@ -335,6 +335,8 @@ function updatePerson() {
       arr[index].math = getEl("math").value;
       arr[index].physics = getEl("physics").value;
       arr[index].chemistry = getEl("chemistry").value;
+      
+
       break;
     case "Employee":
       arr[index].workDays = getEl("workDays").value;
@@ -350,8 +352,7 @@ function updatePerson() {
   }
   console.log(arr);
   // Update the GUI to reflect the changes
-  saveLocalUser("LIST_PERSON", arr);
-  console.log(saveLocalUser);
+  listPeople.saveLocalUser("LIST_PERSON", arr);
   renderGUI();
 
   // Close the modal
