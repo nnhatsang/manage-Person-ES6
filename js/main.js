@@ -449,18 +449,22 @@ getEl("filterRole").onchange = () => {
     let renderAllStudent = listPeople
       .getLocalStore()
       .filter((item) => item.userType == "Student");
+    console.log(renderAllStudent);
     listPeople.renderGUI(renderAllStudent);
   }
   if (checkInputRender == "Employee") {
     let renderAllEmployee = listPeople
       .getLocalStore()
-      .arrListPerson.filter((item) => item.userType == "Employee");
+      .filter((item) => item.userType == "Employee");
+    console.log(renderAllEmployee);
     listPeople.renderGUI(renderAllEmployee);
   }
   if (checkInputRender == "Customer") {
     let renderAllCustomer = listPeople
       .getLocalStore()
-      .arrListPerson.filter((item) => item.userType == "Customer");
+      .filter((item) => item.userType == "Customer");
+    console.log(renderAllCustomer);
+
     listPeople.renderGUI(renderAllCustomer);
   }
 };
