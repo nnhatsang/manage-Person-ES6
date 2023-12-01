@@ -42,7 +42,7 @@
       <div class="card text-center">
         <!-- Header -->
         <div class="card-header myCardHeader">
-          <div class="row">
+          <div class="row mb-3">
             <div class="col-md-6">
               <h3 class="text-left text- font-weight-bold">
                 Danh sách người dùng
@@ -50,6 +50,7 @@
             </div>
             <div class="col-md-6 text-right">
               <button
+              id="addPerson"
                 type="button"
                 class="btn btn-dark"
                 data-bs-toggle="modal"
@@ -58,6 +59,18 @@
                 Thêm Người Dùng
               </button>
             </div>
+          </div>
+          <div class="mb-3">
+            <input type="text"
+              class="form-control" name="searchfilter" id="searchfilter" aria-describedby="helpId" placeholder="Tìm.....">
+          </div>
+          <div class="mb-3 w-25">
+            <select class="form-select " name="filterRole" id="filterRole">
+              <option selected>All</option>
+              <option value="Employee">Giảng Viên</option>
+              <option value="Student">Sinh viên</option>
+              <option value="Customer">Khách hàng</option>
+            </select>
           </div>
         </div>
       </div>
@@ -142,14 +155,14 @@
           <!-- Modal Header -->
           <div class="modal-header">
             <h4 class="modal-title">Thêm Người Dùng</h4>
-            <button
+            <!-- <button
               id="btnDong"
               type="button"
               class="btn btn-danger"
               data-dismiss="modal"
             >
               Đóng
-            </button>
+            </button> -->
           </div>
 
           <!-- Modal Body -->
@@ -239,7 +252,7 @@
                   id="btnDong"
                   type="button"
                   class="btn btn-danger"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                 >
                   Đóng
                 </button>

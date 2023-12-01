@@ -77,6 +77,11 @@ let addPerson = (value) => {
   saveLocalUser();
 };
 renderGUI();
+getEl("addPerson").addEventListener("click", () => {
+  document.querySelector("form").reset();
+  getEl("btnCapNhat").style.display = "none";
+  getEl("btnThemNV").style.display = "block";
+});
 function showFields() {
   const userType = getEl("userType").value;
   const additionalFieldsContainer = getEl("additionalFields");
@@ -335,7 +340,6 @@ function updatePerson() {
       arr[index].math = getEl("math").value;
       arr[index].physics = getEl("physics").value;
       arr[index].chemistry = getEl("chemistry").value;
-      
 
       break;
     case "Employee":
